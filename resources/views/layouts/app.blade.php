@@ -238,7 +238,6 @@
             border-bottom-color: var(--line);
         }
 
-        /* ===== Halaman login & daftar: pas satu layar ===== */
         .auth-wrap { padding: 20px 32px; }
         .auth-hero { min-height: 320px; }
         .auth-form { max-width: 460px; padding: 0 12px; }
@@ -297,11 +296,9 @@
 
             {{-- Logo tanpa kotak ikon --}}
             <a class="navbar-brand brand"
-               href="{{ auth()->check() && auth()->user()->role === 'pemilik'
-                    ? route('owner.dashboard')
-                    : (auth()->check() && auth()->user()->role === 'pelanggan'
-                        ? route('customer.index')
-                        : route('login')) }}">
+            href="{{ auth()->check()
+                    ? (auth()->user()->role === 'pelanggan' ? route('customer.index') : route('owner.dashboard'))
+                    : route('login') }}">
                 Reservia
             </a>
 
@@ -343,28 +340,21 @@
                                 </a>
                             </li>
 
-                        @elseif ($user->role === 'pemilik')
+                        @else
 
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}"
-                                   href="{{ route('owner.dashboard') }}">
-                                    Dashboard
-                                </a>
+                                href="{{ route('owner.dashboard') }}">Dashboard</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('owner.reservations*') ? 'active' : '' }}"
+                                href="{{ route('owner.reservations') }}">Reservasi masuk</a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('owner.restos*') ? 'active' : '' }}"
-                                   href="{{ route('owner.restos') }}">
-                                    Resto & menu
-                                </a>
-                            </li>
-
-                        @else
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/admin/dashboard') }}">
-                                    Dashboard
-                                </a>
+                                href="{{ route('owner.restos') }}">Resto & menu</a>
                             </li>
 
                         @endif

@@ -34,7 +34,6 @@ class User extends Authenticatable
         ];
     }
 
-    // Relasi
     public function restos(): HasMany
     {
         return $this->hasMany(Resto::class, 'pemilik_id');
@@ -45,7 +44,6 @@ class User extends Authenticatable
         return $this->hasMany(Reservasi::class);
     }
 
-    // Helper role
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

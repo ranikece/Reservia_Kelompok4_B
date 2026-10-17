@@ -10,5 +10,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('customer-area', fn($user) => $user->role === 'pelanggan');
         Gate::define('owner-area', fn($user) => $user->role === 'pemilik');
         Gate::define('admin-area', fn($user) => $user->role === 'admin');
+        Gate::define('owner-view', fn($user) => in_array($user->role, ['pemilik', 'admin'], true));
     }
 }

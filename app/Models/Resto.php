@@ -21,7 +21,6 @@ class Resto extends Model
         ];
     }
 
-    // Relasi
     public function pemilik(): BelongsTo
     {
         return $this->belongsTo(User::class, 'pemilik_id');
@@ -37,7 +36,6 @@ class Resto extends Model
         return $this->hasMany(Reservasi::class);
     }
 
-    // Logika ketersediaan (dipakai fitur pencarian dan reservasi)
     public function kapasitasTerpakai(string $tanggal, string $jam): int
     {
         return (int) $this->reservasis()
@@ -52,7 +50,6 @@ class Resto extends Model
         return max(0, $this->kapasitas - $this->kapasitasTerpakai($tanggal, $jam));
     }
 
-    // Hasil: 'tersedia' / 'hampir_penuh' / 'penuh'
     public function statusKetersediaan(string $tanggal, string $jam): string
     {
         $sisa = $this->sisaKapasitas($tanggal, $jam);

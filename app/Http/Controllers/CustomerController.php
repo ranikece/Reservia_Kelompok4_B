@@ -85,7 +85,6 @@ class CustomerController extends Controller
             $query->whereIn('status', $batal);
         }
 
-        // Cari kode booking (4 karakter terakhir) atau nama resto
         if ($request->filled('q')) {
             $q    = mb_strtolower(trim($request->input('q')));
             $kode = Str::afterLast($q, '-');
@@ -104,7 +103,7 @@ class CustomerController extends Controller
                     $awal->copy()->endOfMonth()->toDateString(),
                 ]);
             } catch (\Throwable $e) {
-                // format periode tidak valid, abaikan filter
+                // 
             }
         }
 
@@ -207,7 +206,6 @@ class CustomerController extends Controller
             return back()->withErrors(['menu' => 'Ada menu yang tidak valid.'])->withInput();
         }
 
-        // Menu yang sudah habis boleh dikurangi, tapi tidak boleh ditambah
         $lama = $reservasi->items()->pluck('jumlah', 'menu_id');
 
         foreach ($dipesan as $id => $qty) {
@@ -216,7 +214,6 @@ class CustomerController extends Controller
             }
         }
 
-        // Cek kapasitas, tanpa menghitung reservasi ini sendiri
         $terpakai = (int) $resto->reservasis()
             ->where('tanggal', $data['tanggal'])
             ->where('jam', $data['jam'])
@@ -230,10 +227,8 @@ class CustomerController extends Controller
             return back()->withErrors(['jumlah_orang' => 'Kapasitas tidak mencukupi pada jadwal tersebut. Sisa kursi: '.max(0, $sisa).'.'])->withInput();
         }
 
-        // Cek minimal pesan: Rp50.000 per orang
-        // Cek minimal pesan: Rp50.000 total
         $total   = $dipesan->map(fn ($q, $id) => $menus[$id]->harga * $q)->sum();
-        $minimum = Reservasi::MINIMAL_PER_ORANG; // 50000
+        $minimum = Reservasi::MINIMAL_PER_ORANG;
 
         if ($total < $minimum) {
             return back()->withErrors(['menu' => 'Total pesanan minimal Rp'.number_format($minimum, 0, ',', '.').'.'])->withInput();
@@ -243,7 +238,6 @@ class CustomerController extends Controller
         $statusDp = $reservasi->status_dp;
         $dpBerubah = $dpBaru !== (int) $reservasi->dp_nominal;
 
-        // Kalau nominal DP berubah dan bukti sudah ada, resto perlu verifikasi ulang
         if ($dpBerubah && in_array($statusDp, ['menunggu_verifikasi', 'diterima'], true)) {
             $statusDp = 'menunggu_verifikasi';
         }
@@ -280,7 +274,6 @@ class CustomerController extends Controller
         return redirect()->route('customer.reservations.show', $reservasi)->with('success', $pesan);
     }
 
-// Delete = batalkan reservasi (riwayatnya tetap tersimpan lewat status)
     public function cancelReservation(Request $request, Reservasi $reservasi)
     {
         abort_unless($reservasi->user_id === $request->user()->id, 403);

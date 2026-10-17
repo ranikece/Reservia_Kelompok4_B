@@ -13,7 +13,6 @@ class Reservasi extends Model
 {
     use HasFactory, HasUuids;
 
-    // Status yang dihitung sebagai kapasitas terpakai
     public const STATUS_AKTIF = ['menunggu', 'dikonfirmasi', 'check_in'];
 
     public const MINIMAL_PER_ORANG = 50000;
@@ -45,7 +44,6 @@ class Reservasi extends Model
         return $this->hasMany(ReservasiItem::class);
     }
 
-    // Batalkan reservasi yang belum unggah bukti DP melewati batas waktu
     public static function batalkanKedaluwarsa(): int
     {
         return static::where('status', 'menunggu')
@@ -57,7 +55,6 @@ class Reservasi extends Model
             ]);
     }
 
-    // ===== Accessor untuk tampilan =====
 
     protected function kodeBooking(): Attribute
     {
@@ -68,13 +65,11 @@ class Reservasi extends Model
         });
     }
 
-    // Ubah jadwal, tamu, dan menu hanya selama belum dikonfirmasi resto
     protected function bisaDiedit(): Attribute
     {
         return Attribute::get(fn () => $this->status === 'menunggu');
     }
 
-    // Batal hanya sebelum check-in
     protected function bisaDibatalkan(): Attribute
     {
         return Attribute::get(fn () => in_array($this->status, ['menunggu', 'dikonfirmasi'], true));

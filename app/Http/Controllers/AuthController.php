@@ -24,7 +24,6 @@ class AuthController extends Controller
             'password.required' => 'Password wajib diisi.',
         ]);
 
-        // is_active = true: akun yang dinonaktifkan admin tidak bisa login
         if (Auth::attempt([...$credentials, 'is_active' => true], $request->boolean('remember'))) {
             $request->session()->regenerate();
 
@@ -58,7 +57,6 @@ class AuthController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak sama.',
         ]);
 
-        // Role SELALU pelanggan untuk registrasi publik (tidak boleh dari input form)
         $user = User::create([
             'name'     => $data['name'],
             'email'    => $data['email'],
