@@ -19,6 +19,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/resto/{resto}/reservasi', [CustomerController::class, 'createReservation'])->name('customer.reserve')->middleware('can:customer-area');
     Route::post('/resto/{resto}/reservasi', [CustomerController::class, 'storeReservation'])->name('customer.reserve.store')->middleware('can:customer-area');
     Route::post('/reservasi/{reservasi}/bukti-dp', [CustomerController::class, 'uploadProof'])->name('customer.reservations.proof')->middleware('can:customer-area');
+    Route::get('/reservasi/{reservasi}', [CustomerController::class, 'showReservation'])->name('customer.reservations.show')->middleware('can:customer-area');
+    Route::put('/reservasi/{reservasi}', [CustomerController::class, 'updateReservation'])->name('customer.reservations.update')->middleware('can:customer-area');
+    Route::delete('/reservasi/{reservasi}', [CustomerController::class, 'cancelReservation'])->name('customer.reservations.cancel')->middleware('can:customer-area');
     Route::get('/reservasi', [CustomerController::class, 'reservations'])->name('customer.reservations')->middleware('can:customer-area');
     Route::get('/profil', [CustomerController::class, 'profile'])->name('customer.profile')->middleware('can:customer-area');
     Route::put('/profil', [CustomerController::class, 'updateProfile'])->name('customer.profile.update')->middleware('can:customer-area');

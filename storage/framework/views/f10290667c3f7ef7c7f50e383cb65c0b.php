@@ -53,6 +53,8 @@
 
         .site-nav .container {
             max-width: 1312px;
+            padding-left: 32px;
+            padding-right: 32px;
         }
 
         .brand {
@@ -92,7 +94,7 @@
         .page {
             max-width: 1312px;
             margin: auto;
-            padding: 28px 0 24px;
+            padding: 32px 32px 40px;
         }
 
         .eyebrow {
@@ -236,6 +238,17 @@
             border-bottom-color: var(--line);
         }
 
+        /* ===== Halaman login & daftar: pas satu layar ===== */
+        .auth-wrap { padding: 20px 32px; }
+        .auth-hero { min-height: 320px; }
+        .auth-form { max-width: 460px; padding: 0 12px; }
+        .auth-form .mb-3 { margin-bottom: .8rem !important; }
+
+        @media (min-width: 992px) {
+            .auth-row { height: calc(100vh - 80px - 40px); min-height: 680px; }
+            .auth-hero { min-height: 0; }
+        }
+
         @media (max-width: 768px) {
             .site-nav {
                 height: auto;
@@ -262,7 +275,7 @@
             }
 
             .page {
-                padding: 22px 14px;
+                padding: 22px 16px 32px;
             }
 
             .restaurant-img {
@@ -317,7 +330,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link <?php echo e(request()->routeIs('customer.reservations') ? 'active' : ''); ?>"
+                                <a class="nav-link <?php echo e(request()->routeIs('customer.reservations*') ? 'active' : ''); ?>"
                                    href="<?php echo e(route('customer.reservations')); ?>">
                                     Reservasi saya
                                 </a>
@@ -471,4 +484,4 @@
 
 </body>
 </html>
-<?php /**PATH C:\laragon\www\reservia\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+<?php /**PATH D:\laragon\www\Reservia_Kelompok4_B\resources\views/layouts/app.blade.php ENDPATH**/ ?>
